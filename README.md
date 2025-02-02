@@ -6,7 +6,7 @@ Selenium script to extract commentator names and their profile pictures from Kic
 
 ## Install Dependencies
 ```bash
-pip install -r requirements.txt
+pip install -r Requirements.txt
 ```
 The requirements.txt file includes the following dependencies:
 ```

@@ -18,3 +18,7 @@ Make sure you have Google Chrome installed, as the scraper uses the Chrome WebDr
 ```bash
 python Commentator_Detail_Scraper.py
 ```
+### Author
+
+This code is developed and maintained by Piyush Chandra.  
+You can contact me at piyushchandra004@gmail.com.

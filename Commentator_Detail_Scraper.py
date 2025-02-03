@@ -42,10 +42,8 @@ class KickstarterScraper:
         options.add_argument("--enable-quic")
         options.add_argument("--disable-webrtc")
         options.add_argument("--window-size=1280x800")
-
         options.add_experimental_option("prefs", {
-            "profile.managed_default_content_settings.cookies": 2,  # Disable cookies
-            "profile.managed_default_content_settings.images": 2,  # Disable images
+            "profile.managed_default_content_settings.images": 2,
         })
 
         # Set WebDriver capabilities to optimize page loading

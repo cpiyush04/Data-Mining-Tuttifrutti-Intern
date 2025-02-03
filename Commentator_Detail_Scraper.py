@@ -42,11 +42,8 @@ class KickstarterScraper:
         options.add_argument("--enable-quic")
         options.add_argument("--disable-webrtc")
         options.add_argument("--window-size=1280x800")
-<<<<<<< HEAD
 
         # Block Images to avoid excessive loads
-=======
->>>>>>> 06b73de592ce8c1c2cb648d465ad931b86ff2f30
         options.add_experimental_option("prefs", {
             "profile.managed_default_content_settings.images": 2,
         })

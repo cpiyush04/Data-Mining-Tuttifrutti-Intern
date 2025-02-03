@@ -55,11 +55,10 @@ class SocialMediaProfileScraper:
         })
 
         # Set WebDriver capabilities to optimize page loading
-        webdriver_capabilities = wd.DesiredCapabilities.CHROME.copy()
-        webdriver_capabilities['pageLoadStrategy'] = 'eager'
+        options.page_load_strategy = 'eager'
 
         # Initializing browser session
-        webdriver = uc.Chrome(options=options, desired_capabilities=webdriver_capabilities)
+        webdriver = uc.Chrome(options=options)
 
         # Blocking unnecessary network requests (images, fonts, videos, etc.) to speed up loading
         webdriver.execute_cdp_cmd("Network.enable", {})

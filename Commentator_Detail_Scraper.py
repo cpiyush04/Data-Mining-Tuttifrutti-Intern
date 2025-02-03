@@ -43,17 +43,16 @@ class KickstarterScraper:
         options.add_argument("--disable-webrtc")
         options.add_argument("--window-size=1280x800")
 
+        # Block Images to avoid excessive loads
         options.add_experimental_option("prefs", {
-            "profile.managed_default_content_settings.cookies": 2,  # Disable cookies
-            "profile.managed_default_content_settings.images": 2,  # Disable images
+            "profile.managed_default_content_settings.images": 2,
         })
 
         # Set WebDriver capabilities to optimize page loading
-        webdriver_capabilities = wd.DesiredCapabilities.CHROME.copy()
-        webdriver_capabilities['pageLoadStrategy'] = 'eager'
+        options.page_load_strategy = 'eager'
 
         # Initializing browser session
-        webdriver = uc.Chrome(options=options, desired_capabilities=webdriver_capabilities)
+        webdriver = uc.Chrome(options=options)
 
         # Blocking unnecessary network requests (images, fonts, videos, etc.) to speed up loading
         webdriver.execute_cdp_cmd("Network.enable", {})
@@ -80,7 +79,7 @@ class KickstarterScraper:
         """
         try:
             df = pd.read_excel(filepath)
-            links = df.iloc[start_row - 2:end_row - 1, url_col]
+            links = df.iloc[start_row - 2:end_row - 1, url_col-1]
             return links
         except Exception as e:
             print(f"Error reading while file: {e}")
@@ -205,11 +204,11 @@ class KickstarterScraper:
 
 if __name__ == "__main__":
     scraper = KickstarterScraper()
-    output_file = "scraped_data.csv"
+    output_file = "scraped_data1.csv"
     input_file = "new.xlsx"
 
     try:
-        game_links = scraper.read_from_file(input_file, 107, 109, 2)
+        game_links = scraper.read_from_file(input_file, 652, 653, 2)
         scraper.links_parser(game_links, output_file)
     finally:
         scraper.close()

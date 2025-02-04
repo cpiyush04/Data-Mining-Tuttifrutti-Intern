@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 import time
 import pandas as pd
+import csv
 
 
 class KickstarterScraper:
@@ -97,7 +98,7 @@ class KickstarterScraper:
         """
 
         collected_names = set()  # Using Data Struct set to avoid repetitive names from being scrapped
-        image_links = []   # list for storing links to profile images
+        collected_data = []  # list for storing names and linked profile images as pair
 
         # Loads the project page
         self.driver.get(url)
@@ -150,32 +151,34 @@ class KickstarterScraper:
                 if name and name not in collected_names:
                     collected_names.add(name)
                     image_source = container.find_element(By.CSS_SELECTOR, "img.avatar").get_attribute("src")
-                    image_links.append(image_source)
+                    collected_data.append((name, image_source))
             except Exception:
                 continue
 
-        return game_name, list(collected_names), image_links
+        return game_name, collected_data
 
     @staticmethod
-    def save_results(file_path, game_name, names, images):
+    def save_results(file_path, game_name, commentator_data):
         """
             Creates file to save output if it does not exist. Appends data for a single game to an existing file.
             Ensures the game name appears only once for the associated commentators.
         """
-        data = []
-        if names:
-            data.append([game_name, names[0],
-                         images[0] if len(images) > 0 else "No Image"])
-            data.extend([["", name, images[idx] if idx < len(images) else "No Image"] for idx, name in
-                         enumerate(names[1:], start=1)])
-        else:
-            data.append([game_name, "No Commentators Found", "No Image"])
-
-        df = pd.DataFrame(data, columns=["Game", "Commentator_Name", "Profile_Image_Link"])
-
         try:
-            file_exists = os.path.exists(file_path)  # Using os.path.exists instead of deprecated pandas function
-            df.to_csv(file_path, mode='a', index=False, encoding='utf-8', header=not file_exists)
+            file_exists = os.path.exists(file_path)
+            with open(file_path, mode='a', newline='', encoding='utf-8-sig') as file:
+                writer = csv.writer(file)
+
+                if not file_exists:
+                    writer.writerow(["Game", "Commentator_Name", "Profile_Image_Link"])
+                
+                first_row = True
+                for name, img in commentator_data:
+                    writer.writerow([game_name if first_row else "", name, img])
+                    first_row = False
+
+                if not commentator_data:
+                    writer.writerow([game_name, "No Commentators Found", "No Image Found"])
+        
         except Exception as e:
             print(f"Error saving data: {e}")
 
@@ -190,9 +193,9 @@ class KickstarterScraper:
             output_filepath: path to storage file
         """
         for link in links:
-            game_name, commentator_name, profile_picture = self.scrape_commentator_name_picture(link)
-            if commentator_name:
-                self.save_results(output_filepath, game_name, commentator_name, profile_picture)
+            game_name, commentator_data = self.scrape_commentator_name_picture(link)
+            if commentator_data:
+                self.save_results(output_filepath, game_name, commentator_data)
             else:
                 print(f"No commentators found for: {game_name}")
                 break

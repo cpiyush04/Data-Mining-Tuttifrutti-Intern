@@ -156,7 +156,7 @@ class SocialMediaProfileScraper:
         with open(filepath, "a", newline="", encoding="utf-8") as file:
             writer = csv.writer(file)
             if not file_exists:
-                writer.writerow(["Profile Name"] + [f"Link {i + 1}" for i in range(9)])
+                writer.writerow(["Profile Name"] + [f"{i + 1}" for i in range(9)])
 
             try:
                 for username in usernames:

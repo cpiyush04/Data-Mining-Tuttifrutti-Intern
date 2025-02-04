@@ -17,7 +17,7 @@ openpyxl==3.1.5
 ```
 Make sure you have Google Chrome installed, as the scraper uses the Chrome WebDriver.
 
-1. to extract the commentator names and their associated profile pictures from a Kickstarter project, run:
+1. To extract the commentator names and their associated profile pictures from a Kickstarter project, run:
 ```bash
 python Commentator_Detail_Scraper.py
 ```
@@ -25,7 +25,11 @@ python Commentator_Detail_Scraper.py
 ```bash
 python user_account_search_automation.py
 ```  
-3. Additional script - to collect the number of comments available for a specific Kickstarter project, run
+3. To extract gaming projects and respective URLs from Kickstarter, run:
+```bash
+python Games_urls_scraper.py
+```   
+4. Additional script - To collect the number of comments available for a specific Kickstarter project, run
 ```bash
 python Number_of_Comments.py
 ```

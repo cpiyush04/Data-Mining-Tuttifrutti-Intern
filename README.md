@@ -10,9 +10,9 @@ pip install -r Requirements.txt
 ```
 The requirements.txt file includes the following dependencies:
 ```
-pandas==1.5.3
-selenium==4.8.0
-undetected-chromedriver==3.1.5
+pandas==2.0.1
+selenium==4.27.1
+undetected-chromedriver==3.5.5
 openpyxl==3.1.5
 ```
 Make sure you have Google Chrome installed, as the scraper uses the Chrome WebDriver.

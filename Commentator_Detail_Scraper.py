@@ -78,13 +78,23 @@ class KickstarterScraper:
             Returns:
             list: List of URLs read from the file.
         """
-        try:
-            df = pd.read_excel(filepath)
-            links = df.iloc[start_row - 2:end_row - 1, url_col-1]
-            return links
-        except Exception as e:
-            print(f"Error reading while file: {e}")
-            return []
+        if filepath.endswith(".xlsx"):
+            try:
+                df = pd.read_excel(filepath)
+                links = df.iloc[start_row - 2:end_row - 1, url_col-1]
+                return links
+            except Exception as e:
+                print(f"Error reading while file: {e}")
+                return []
+                
+        elif filepath.endswith(".csv"):
+            try:
+                df = pd.read_csv(filepath)
+                links = df.iloc[start_row - 2:end_row - 1, url_col-1]
+                return links
+            except Exception as e:
+                print(f"Error reading while file: {e}")
+                return []
 
     def scrape_commentator_name_picture(self, url):
         """

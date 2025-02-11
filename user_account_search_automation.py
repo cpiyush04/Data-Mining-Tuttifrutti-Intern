@@ -36,7 +36,7 @@ class SocialMediaProfileScraper:
         options.add_argument("--process-per-site")
         options.add_argument("--log-level=3")
         options.add_argument("--remote-debugging-port=0")
-        options.add_argument("--single-process")
+        # options.add_argument("--single-process") - Reject Single Process Argument
         options.add_argument("--disable-background-timer-throttling")
         options.add_argument("--disable-backgrounding-occluded-windows")
         options.add_argument("--disable-renderer-backgrounding")
@@ -118,8 +118,9 @@ class SocialMediaProfileScraper:
 
         try:
             self.driver.delete_all_cookies()
-            search_query = f'"{username}" ("gamer" OR "streamer") Instagram OR ' \
-                           f'LinkedIn OR Twitter OR Facebook OR YouTube'
+
+            # Edit Query For Better Search Responses
+            search_query = f'{username} gamer OR streamer Instagram OR LinkedIn OR Twitter OR Facebook OR YouTube'
             wait = WebDriverWait(self.driver, 10)
             search_box = wait.until(EC.presence_of_element_located((By.NAME, "q")))
             search_box.clear()
@@ -156,7 +157,7 @@ class SocialMediaProfileScraper:
         with open(filepath, "a", newline="", encoding="utf-8") as file:
             writer = csv.writer(file)
             if not file_exists:
-                writer.writerow(["Profile Name"] + [f"Link {i + 1}" for i in range(9)])
+                writer.writerow(["Profile Name"] + [f"{i + 1}" for i in range(9)])
 
             try:
                 for username in usernames:
@@ -165,7 +166,8 @@ class SocialMediaProfileScraper:
                         writer.writerow([username] + links[:9])  # Writing without reopening the file
                     else:
                         print(f"Could not fetch {username}\n")
-                        break
+                        writer.writerow([username])
+                        continue
             except KeyboardInterrupt:
                 print("Process interrupted. Saved Progress")
             finally:
